@@ -5,7 +5,8 @@ const { authenticateToken } = require('../middleware/authenticate'); // Middlewa
 
 // POST endpoint to save an article
 router.post('/', authenticateToken, async (req, res) => {
-  const userId = req.user.id; // Extracted from JWT token after authentication
+  console.log(req.body); // This will show you what's being sent to the backend
+  const userId = req.user.id;
   const { article_id, title, source, url, image_url } = req.body;
 
   try {

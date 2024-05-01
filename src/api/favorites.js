@@ -5,7 +5,7 @@ const { authenticateToken } = require('../middleware/authenticate');
 
 // Endpoint to save a favorite player with detailed stats
 router.post('/', authenticateToken, async (req, res) => {
-  const { userId } = req.user;
+  const userId = req.user.id; // Use `id` directly from `req.user` provided by JWT middleware
   const {
     playerId,
     player_name,
@@ -30,7 +30,7 @@ router.post('/', authenticateToken, async (req, res) => {
       steals_per_game, fg_percentage, ft_percentage, turnovers_per_game, plus_minus) 
       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15) RETURNING *`,
       [
-        userId,
+        userId, // Make sure this is correctly extracted from the decoded token
         playerId,
         player_name,
         team_name,
@@ -50,13 +50,15 @@ router.post('/', authenticateToken, async (req, res) => {
     res.status(201).json(result.rows[0]);
   } catch (error) {
     console.error('Error saving favorite:', error);
-    res.status(500).json({ message: 'Failed to save favorite' });
+    res
+      .status(500)
+      .json({ message: 'Failed to save favorite', error: error.detail });
   }
 });
 
 // Endpoint to retrieve all saved players for the logged-in user
 router.get('/', authenticateToken, async (req, res) => {
-  const userId = req.user.id;
+  const userId = req.user.id; // Ensure this is the correct ID field
 
   try {
     const result = await pool.query(

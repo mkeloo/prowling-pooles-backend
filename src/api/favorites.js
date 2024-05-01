@@ -3,29 +3,54 @@ const router = express.Router();
 const pool = require('../config/database');
 const { authenticateToken } = require('../middleware/authenticate');
 
-// Endpoint to save a favorite player
-// Endpoint to save a favorite player
+// Endpoint to save a favorite player with detailed stats
 router.post('/', authenticateToken, async (req, res) => {
-  const userId = req.user.id;
-  const { playerId } = req.body;
-
-  console.log('Saving favorite:', { userId, playerId }); // Log the input for debugging
-
-  if (!playerId) {
-    return res.status(400).json({ message: 'Player ID is required' });
-  }
+  const { userId } = req.user;
+  const {
+    playerId,
+    player_name,
+    team_name,
+    player_image_url,
+    team_image_url,
+    points_per_game,
+    rebounds_per_game,
+    assists_per_game,
+    blocks_per_game,
+    steals_per_game,
+    fg_percentage,
+    ft_percentage,
+    turnovers_per_game,
+    plus_minus,
+  } = req.body;
 
   try {
     const result = await pool.query(
-      'INSERT INTO favorites (user_id, player_id) VALUES ($1, $2) RETURNING *',
-      [userId, playerId]
+      `INSERT INTO favorites (user_id, player_id, player_name, team_name, player_image_url, team_image_url,
+      points_per_game, rebounds_per_game, assists_per_game, blocks_per_game,
+      steals_per_game, fg_percentage, ft_percentage, turnovers_per_game, plus_minus) 
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15) RETURNING *`,
+      [
+        userId,
+        playerId,
+        player_name,
+        team_name,
+        player_image_url,
+        team_image_url,
+        points_per_game,
+        rebounds_per_game,
+        assists_per_game,
+        blocks_per_game,
+        steals_per_game,
+        fg_percentage,
+        ft_percentage,
+        turnovers_per_game,
+        plus_minus,
+      ]
     );
     res.status(201).json(result.rows[0]);
   } catch (error) {
     console.error('Error saving favorite:', error);
-    res
-      .status(500)
-      .json({ message: 'Failed to save favorite', error: error.detail });
+    res.status(500).json({ message: 'Failed to save favorite' });
   }
 });
 

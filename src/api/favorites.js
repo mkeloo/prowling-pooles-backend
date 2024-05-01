@@ -4,9 +4,16 @@ const pool = require('../config/database');
 const { authenticateToken } = require('../middleware/authenticate');
 
 // Endpoint to save a favorite player
+// Endpoint to save a favorite player
 router.post('/', authenticateToken, async (req, res) => {
   const userId = req.user.id;
   const { playerId } = req.body;
+
+  console.log('Saving favorite:', { userId, playerId }); // Log the input for debugging
+
+  if (!playerId) {
+    return res.status(400).json({ message: 'Player ID is required' });
+  }
 
   try {
     const result = await pool.query(
@@ -16,7 +23,9 @@ router.post('/', authenticateToken, async (req, res) => {
     res.status(201).json(result.rows[0]);
   } catch (error) {
     console.error('Error saving favorite:', error);
-    res.status(500).json({ message: 'Failed to save favorite' });
+    res
+      .status(500)
+      .json({ message: 'Failed to save favorite', error: error.detail });
   }
 });
 

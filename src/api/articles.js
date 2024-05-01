@@ -4,7 +4,7 @@ const pool = require('../config/database'); // Assuming pool is your connection 
 const { authenticateToken } = require('../middleware/authenticate'); // Middleware to check if the user is authenticated
 
 // POST endpoint to save an article
-router.post('/save-article', authenticateToken, async (req, res) => {
+router.post('/', authenticateToken, async (req, res) => {
   const userId = req.user.id; // Extracted from JWT token after authentication
   const { article_id, title, source, url, image_url } = req.body;
 
@@ -23,7 +23,7 @@ router.post('/save-article', authenticateToken, async (req, res) => {
 });
 
 // GET endpoint to retrieve all saved articles for the logged-in user
-router.get('/saved-articles', authenticateToken, async (req, res) => {
+router.get('/', authenticateToken, async (req, res) => {
   const userId = req.user.id;
 
   try {

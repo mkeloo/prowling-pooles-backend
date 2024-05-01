@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const pool = require('./src/config/database');
 const authRouter = require('./src/api/auth');
+const favoritesRouter = require('./src/api/favorites');
 
 const app = express();
 
@@ -26,6 +27,7 @@ app.options('*', cors(corsOptions));
 
 app.use(express.json());
 app.use('/api/auth', authRouter);
+app.use('/api/favorites', favoritesRouter);
 
 app.use((req, res, next) => {
   console.log(

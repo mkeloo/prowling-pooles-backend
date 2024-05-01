@@ -3,6 +3,7 @@ const cors = require('cors');
 const pool = require('./src/config/database');
 const authRouter = require('./src/api/auth');
 const favoritesRouter = require('./src/api/favorites');
+const articlesRouter = require('./src/api/articles');
 
 const app = express();
 
@@ -28,6 +29,7 @@ app.options('*', cors(corsOptions));
 app.use(express.json());
 app.use('/api/auth', authRouter);
 app.use('/api/favorites', favoritesRouter);
+app.use('/api/articles', articlesRouter);
 
 app.use((req, res, next) => {
   console.log(

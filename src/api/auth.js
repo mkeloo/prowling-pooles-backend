@@ -25,6 +25,7 @@ router.get('/test-db', async (req, res) => {
 });
 
 // Register User
+// Register User
 router.post('/register', async (req, res) => {
   const { username, email, password } = req.body;
   try {
@@ -36,11 +37,24 @@ router.post('/register', async (req, res) => {
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    await pool.query(
-      'INSERT INTO users (username, email, password) VALUES ($1, $2, $3)',
+    const insertResult = await pool.query(
+      'INSERT INTO users (username, email, password) VALUES ($1, $2, $3) RETURNING id',
       [username, email, hashedPassword]
     );
-    res.status(201).json({ message: 'User registered successfully!' });
+
+    const userId = insertResult.rows[0].id; // Get the new user's id
+
+    const token = jwt.sign(
+      { id: userId, username: username },
+      process.env.JWT_SECRET,
+      { expiresIn: '1h' } // Token is valid for 1 hour
+    );
+
+    res.status(201).json({
+      message: 'User registered successfully!',
+      token, // Send the token to the client
+      user: { id: userId, username: username },
+    });
   } catch (error) {
     console.error('Registration error:', error);
     res

@@ -4,7 +4,7 @@ const pool = require('./src/config/database');
 const authRouter = require('./src/api/auth');
 const favoritesRouter = require('./src/api/favorites');
 const articlesRouter = require('./src/api/articles');
-const teamComparisonRouter = require('./src/api/team_comparison');
+const teamComparisonRouter = require('./src/api/team_comparisons');
 
 const app = express();
 

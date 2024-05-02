@@ -21,7 +21,20 @@ router.post('/', authenticateToken, async (req, res) => {
 
   try {
     const result = await pool.query(
-      `INSERT INTO player_statistics (user_id, player_id, season, points, rebounds, assists, blocks, steals, plus_minus, field_goal_percentage, free_throw_percentage, turnovers) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) RETURNING *`,
+      `INSERT INTO player_statistics (
+        user_id, 
+        player_id, 
+        season, 
+        points, 
+        rebounds, 
+        assists, 
+        blocks, 
+        steals, 
+        plus_minus, 
+        field_goal_percentage, 
+        free_throw_percentage, 
+        turnovers
+      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) RETURNING *`,
       [
         userId,
         player_id,

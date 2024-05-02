@@ -26,7 +26,6 @@ router.post('/', authenticateToken, async (req, res) => {
         userId,
         player_id,
         season,
-        game_number,
         points,
         rebounds,
         assists,

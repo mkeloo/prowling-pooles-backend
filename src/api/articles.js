@@ -1,11 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const pool = require('../config/database'); // Assuming pool is your connection pool for PostgreSQL
-const { authenticateToken } = require('../middleware/authenticate'); // Middleware to check if the user is authenticated
+const pool = require('../config/database');
+const { authenticateToken } = require('../middleware/authenticate');
 
 // POST endpoint to save an article
 router.post('/', authenticateToken, async (req, res) => {
-  console.log(req.body); // This will show you what's being sent to the backend
+  console.log(req.body);
   const userId = req.user.id;
   const { article_id, title, source, url, image_url } = req.body;
 

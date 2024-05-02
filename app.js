@@ -6,6 +6,7 @@ const favoritesRouter = require('./src/api/favorites');
 const articlesRouter = require('./src/api/articles');
 const teamComparisonRouter = require('./src/api/team_comparisons');
 const playersComparisonRouter = require('./src/api/players_comparisons');
+const playerStatisticsRouter = require('./src/api/player_statistics');
 
 const app = express();
 
@@ -34,6 +35,7 @@ app.use('/api/favorites', favoritesRouter);
 app.use('/api/articles', articlesRouter);
 app.use('/api/team_comparisons', teamComparisonRouter);
 app.use('/api/players_comparisons', playersComparisonRouter);
+app.use('/api/player_statistics', playerStatisticsRouter);
 
 app.use((req, res, next) => {
   console.log(

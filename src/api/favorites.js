@@ -5,7 +5,7 @@ const { authenticateToken } = require('../middleware/authenticate');
 
 // Endpoint to save a favorite player with detailed stats
 router.post('/', authenticateToken, async (req, res) => {
-  const userId = req.user.id; // Use `id` directly from `req.user` provided by JWT middleware
+  const userId = req.user.id;
   const {
     playerId,
     player_name,
@@ -30,7 +30,7 @@ router.post('/', authenticateToken, async (req, res) => {
       steals_per_game, fg_percentage, ft_percentage, turnovers_per_game, plus_minus) 
       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15) RETURNING *`,
       [
-        userId, // Make sure this is correctly extracted from the decoded token
+        userId,
         playerId,
         player_name,
         team_name,

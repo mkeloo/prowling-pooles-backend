@@ -6,6 +6,7 @@ const { authenticateToken } = require('../middleware/authenticate');
 // POST route to insert comparison totals
 router.post('/', authenticateToken, async (req, res) => {
   const { userId, comparisonData } = req.body; // comparisonData contains all fields for comparison_totals
+  console.log('Received payload:', req.body); // Log the full request body
 
   try {
     const result = await pool.query(
